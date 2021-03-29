@@ -561,10 +561,11 @@ def LCA(T,p,q):
 		the_chosen = p if d1 > d2 else q  # find the note with bigger depth
 		
 		the_not_chosen = p if d1 < d2 else q
-		# loop until c
+		# loop until you reach the node with lower depth or his parent or you reach the root
 		while not (the_chosen == the_not_chosen or the_chosen == T.root() or the_chosen == T.parent(the_not_chosen)):
 			the_chosen = T.parent(the_chosen) 
 			
 	return the_chosen	
 		
+	"""In the best case the running time is 0(1). In the worst - 0(n)"""
 
