@@ -134,9 +134,4 @@ both p and q as descendants (where we allow a position to be a descendant
 of itself ). Given two positions p and q, describe an efficient algorithm for
 finding the LCA of p and q. What is the running time of your algorithm?
 
-C-8.59 Let T be a binary tree with n positions, and, for any position p in T , let d p
-denote the depth of p in T . The distance between two positions p and q
-in T is d p + d q − 2d a , where a is the lowest common ancestor (LCA) of p
-and q. The diameter of T is the maximum distance between two positions
-in T . Describe an efficient algorithm for finding the diameter of T .
 
