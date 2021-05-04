@@ -4,6 +4,24 @@ takes all elements of LinkedQueue Q2 and appends them to the end of the
 original queue. The operation should run in O(1) time and should result
 in Q2 being an empty queue."""
 
+#-------------------------------my solution--------------------------
+
+def concatenate(self,other):
+	  """Takes all elements of other queue and appends them to this queue
+	  Returns other queue empty"""
+	  if type(other) != type(self):
+		  return TypeError('Not a queue')
+	  if other.is_empty():
+		  return ValueError('The queue is empty')
+	  self._tail._next = other._head	# link last and front elements of both queues
+	  self._tail = other._tail			# new tail is other tail
+	  self._size += len(other)
+	  other._head = None				# deprecate remaining values
+	  other._tail = None
+	  other._size = 0
+	  return other
+
+#------------------------- Source code plus my solution------------------
 
 class LinkedQueue:
   """FIFO queue implementation using a singly linked list for storage."""
