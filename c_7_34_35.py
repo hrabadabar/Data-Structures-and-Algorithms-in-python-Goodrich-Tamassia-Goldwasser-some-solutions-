@@ -1,5 +1,42 @@
 
+ """Modify the PositionalList class to support a method swap(p, q) that causes
+the underlying nodes referenced by positions p and q to be exchanged for
+each other. Relink the existing nodes; do not create any new nodes."""
 
+#----------------------------- method-------------------------------
+
+def swap(self,p,q):
+    """Swaps underlying nodes at positions p and q"""
+    node1 = self._validate(p)
+    node2 = self._validate(q)
+    # Swap two neigbour nodes. node1 and node2 become node2 and node1, node1._prev
+    # becomes node2,node2._next becomes node1,node2._prev = node1._prev
+    #(we keep a record of node1_prev), node1._prev._next become node2  
+    if node1._next == node2:                    
+      temp = node1._prev
+      node1._next = node2._next
+      node2._next._prev = node1
+      node1._prev = node2
+      node2._next = node1
+
+      node2._prev = temp
+      temp._next = node2
+    # Swap two distant nodes. Exchange all six pointers.First make a 
+    # record of one node's pointers
+    else:
+      temp1 = node1._next
+      temp2 = node1._prev
+      node1._next = node2._next
+      node2._next._prev = node1
+      node1._prev = node2._prev
+      node2._prev._next = node1
+      node2._next = temp1
+      temp1._prev = node2
+      node2._prev = temp2
+      temp2._next = node2
+
+#-----------------------------source code -------------------------
+  
 class _DoublyLinkedBase:
   """A base class providing a doubly linked list representation."""
 
