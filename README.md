@@ -19,6 +19,9 @@ C-7.31 Design a forward list ADT that abstracts the operations on a singly linke
 list, much as the positional list ADT abstracts the use of a doubly linked
 list. Implement a ForwardList class that supports such an ADT.
 
+C-7.33 Modify the DoublyLinkedBase class to include a reverse method that re-
+ verses the order of the list, yet without creating or destroying any nodes.
+ 
 C-7.34 Modify the PositionalList class to support a method swap(p, q) that causes
 the underlying nodes referenced by positions p and q to be exchanged for
 each other. Relink the existing nodes; do not create any new nodes.
