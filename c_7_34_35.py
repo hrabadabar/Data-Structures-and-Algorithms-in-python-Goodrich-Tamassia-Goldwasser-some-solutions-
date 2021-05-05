@@ -1,3 +1,23 @@
+ #C-7.33 
+
+ 
+ """Modify the DoublyLinkedBase class to include a reverse method that re-
+ verses the order of the list, yet without creating or destroying any nodes."""
+ 
+ #-----------------------------method----------------------------------
+  def _reverse(self):
+    """Reverses the order of the list"""
+    # Start swapping the elements at both ends of the list
+    # Stop when the middle is reached if length of the list is odd
+    # or when cursors go past each other if length of the list is even
+    cursor = self._trailer._prev
+    forward = self._header._next
+    while cursor != forward or cursor._next != forward._next:
+      forward._element,cursor._element = cursor._element,forward._element
+      forward = forward._next
+      cursor = cursor._prev
+
+#C-7.34
 
  """Modify the PositionalList class to support a method swap(p, q) that causes
 the underlying nodes referenced by positions p and q to be exchanged for
@@ -34,6 +54,32 @@ def swap(self,p,q):
       temp1._prev = node2
       node2._prev = temp2
       temp2._next = node2
+      
+#C-7.35
+
+"""To implement the iter method of the PositionalList class, we relied on the
+  convenience of Python’s generator syntax and the yield statement. Give
+  an alternative implementation of iter by designing a nested iterator class.
+  (See Section 2.3.4 for discussion of iterators.)"""
+
+#------------------------my implementation -------------------
+
+  class _Iterator:
+    """Returns an iterator that iterates over the list"""
+    
+    def __init__(self,sequence):
+      self._sequence = sequence
+      self._start =  sequence._header
+        
+    def __next__(self):
+      self._start = self._start._next
+      if self._start != self._sequence._trailer:
+        return self._start._element
+      else:
+        raise StopIteration()
+    
+    def __iter__(self):
+      return self    
 
 #-----------------------------source code -------------------------
   
