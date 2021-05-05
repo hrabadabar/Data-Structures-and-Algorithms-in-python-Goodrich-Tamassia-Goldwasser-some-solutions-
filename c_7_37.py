@@ -1,3 +1,60 @@
+#C-7.37 
+"""Implement a function that accepts a PositionalList L of n integers sorted
+in nondecreasing order, and another value V , and determines in O(n) time
+if there are two elements of L that sum precisely to V . The function should
+return a pair of positions of such elements, if found, or None otherwise."""
+
+#------------------------------my function ------------------------------
+
+def find_sum(P,v):
+	"""Returns pair of positions of elements if the sum of any two
+	elements in P sum up to v"""
+	first = P.first()
+	last = P.last()
+	while first != last:
+		total = first.element() + last.element()
+		if total == v:
+			return first.element(),last.element()
+		elif total > v:  # sum is larger than necessary
+			last = P.before(last)
+		else:  # total < v
+			first = P.after(first)
+			
+#C-7.38 
+"""There is a simple, but inefficient, algorithm, called bubble-sort, for sorting
+a list L of n comparable elements. This algorithm scans the list n−1 times,
+where, in each scan, the algorithm compares the current element with the
+next one and swaps them if they are out of order. Implement a bubble sort
+function that takes a positional list L as a parameter. What is the running
+time of this algorithm, assuming the positional list is implemented with a
+doubly linked list?"""
+
+#---------------------------my method--------------------------------
+
+# We scan the sequene n - 1 times. The first time we scan, the largest 
+# number takes the last position, the second time - the second largest
+# number takes the position before the last, and so on until the sequence
+# is fully sorted. We maintain a variable last and each time we scan the 
+# list we reassign our variable to the position before current last position
+
+def bubble_sort(P):
+	"""Sorts a positional list P in nondecreasing order"""
+	start = P.first()
+	last = P.last()
+	while start != last:		# iterate ones for every item in the list
+		prev = start		# not the first two elements
+		_next = P.after(prev)	# to be compared
+	
+		while _next != P.after(last):	# start moving along the sequence
+			if prev.element() > _next.element():
+					P.swap_elements(prev,_next)
+			prev = P.after(prev)
+			_next = P.after(_next)
+		last = P.before(last)         # last element is now sorted
+	return P
+
+#-----------------------------------source code--------------------------
+
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
@@ -293,16 +350,16 @@ def bubble_sort(P):
 	"""Sorts a positional list P in nondecreasing order"""
 	start = P.first()
 	last = P.last()
-	while start != last:
-		prev = start
-		_next = P.after(prev)
+	while start != last:		# iterate ones for every item in the list
+		prev = start		# not the first two elements
+		_next = P.after(prev)	# to be compared
 	
-		while _next != P.after(last):
+		while _next != P.after(last):	# start moving along the sequence
 			if prev.element() > _next.element():
 					P.swap_elements(prev,_next)
 			prev = P.after(prev)
 			_next = P.after(_next)
-		last = P.before(last)
+		last = P.before(last)         # last element is now sorted
 	return P	
 
 
