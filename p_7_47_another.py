@@ -1,3 +1,112 @@
+"""Implement a CardHand class that supports a person arranging a group of
+cards in his or her hand. The simulator should represent the sequence of
+cards using a single positional list ADT so that cards of the same suit are
+kept together. Implement this strategy by means of four “fingers” into the
+hand, one for each of the suits of hearts, clubs, spades, and diamonds,
+so that adding a new card to the person’s hand or playing a correct card
+from the hand can be done in constant time. The class should support the
+following methods:
+• add card(r, s): Add a new card with rank r and suit s to the hand.
+• play(s): Remove and return a card of suit s from the player’s hand;
+if there is no card of suit s, then remove and return an arbitrary card
+from the hand.
+iter ( ): Iterate through all cards currently in the hand.
+•
+• all of suit(s): Iterate through all cards of suit s that are currently in"""
+
+#-----------------------------my class---------------------------------
+
+import random
+class CardHand:
+	"""Class representing a card hand"""
+	
+	RANKS = [1,2,3,4,5,6,7,8,9,10,'ace','king','queen','jack']
+	SUITS = ['hearts','clubs','diamonds','spades']
+	
+	def __init__(self):
+		"""Sequence of cards is represented by a positional list
+		Create an empty positional list"""
+		"""Create a position for each of the suits"""
+		
+		self._data = PositionalList()
+		self._size = 0
+		self._clubs = self._data.add_first('clubs')
+		self._hearts = self._data.add_after(self._clubs,'hearts')	
+		self._spades = self._data.add_after(self._hearts,'spades')
+		self._diamonds = self._data.add_after(self._spades, 'diamonds')
+		
+	
+	def add_card(self,r,s):
+		"""Add a card of given suit and given rank to the hand"""
+		if r not in CardHand.RANKS or s not in CardHand.SUITS:
+			raise ValueError('Card does not exist')
+		# add each card of suit s to the correct position
+		if s == self._clubs.element():
+			self._data.add_after(self._clubs,(r,s))
+		elif s == self._hearts.element():
+			self._data.add_after(self._hearts,(r,s))
+		elif self._spades.element() == s:
+			self._data.add_after(self._spades,(r,s))
+		else:
+			self._data.add_after(self._diamonds,(r,s))
+		self._size += 1
+		
+	def _find_suit(self,s):
+		"""Finds the position for given suit"""
+		if s == 'clubs':
+			pos = self._clubs
+		elif s == 'hearts':
+			pos = self._hearts
+		elif s == 'diamonds':
+			pos = self._diamonds
+		elif s == 'spades':
+			pos = self._spades
+		else:
+			raise ValueError('Must be a proper suit')
+		return pos
+			
+	def play(self,s):
+		"""Play and return a card from suit s
+		if there are no cards of suit s, play any card"""
+		if not s in CardHand.SUITS:
+			raise ValueError('Must be a proper suit')
+		if self._data.is_empty():
+			raise ValueError('No cards in the hand')
+		find = self._data.after(self._find_suit(s))
+		if find != None and find.element()[1] == s:
+			old = self._data.delete(find)
+		else:
+			card = random.choice(CardHand.SUITS)
+			return self.play(card)
+		self._size -= 1
+		return str(old[0]) + ' of ' + old[1]
+		
+	def all_of_suit(self,s):
+		"""Iterates through all cards of given suit currently in the hand"""
+		find = self._data.after(self._find_suit(s))
+		if find is not None:
+			while find.element()[1] == s:
+				print(find.element())
+				find = self._data.after(find)
+			
+		
+			
+	def __iter__(self):
+		"""Iterates over the sequence"""
+		start = self._data.after(self._data.first())
+		while start != None:
+			if start != self._clubs and start != self._hearts \
+			and start != self._spades and start != self._diamonds:
+				yield start.element()
+			start = self._data.after(start)
+		
+	def __repr__(self):
+		"""String representation of the class"""
+		return str([str(x[0]) + ' of ' + x[1] for x in self])	
+
+		
+#------------------------source code----------------------------------
+
 
 # Copyright 2013, Michael H. Goldwasser
 #
