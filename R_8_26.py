@@ -1,4 +1,20 @@
+ """R-8.26 The collections.deque class supports an extend method that adds a col-
+  lection of elements to the end of the queue at once. Reimplement the
+  breadthfirst method of the Tree class to take advantage of this feature."""
+  
+  
+  def breadthfirst(self):
+     """Generate a breadth-first iteration of the positions of the tree."""
+     if not self.is_empty():
+      fringe = collections.deque()             # known positions not yet yielded
+      fringe.enqueue(self.root())        # starting with the root
+      while not fringe.is_empty():
+          p = fringe.dequeue()
+          yield p
+          fringe.extend([j for j in self.children(p)])  
 
+#----------------------source code-------------------------------------          
+ 
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
