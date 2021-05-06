@@ -1,3 +1,49 @@
+"""Write a Scoreboard class that maintains the top 10 scores for a game ap-
+plication using a singly linked list, rather than the array that was used in
+Section 5.5.1."""
+
+#-------------------------------my class -----------------------------
+
+class Scoreboard:
+	"""Maintains the top 10 scores of a game using a positional list
+	as underlying storage"""
+	
+	def __init__(self):
+		"""Create empty positional list"""
+		self._data = SinglyLinkedListBase()
+
+	
+		
+	def first(self):
+		"""Return the score at first position"""
+		return self._data.first().element()
+		
+	def last(self):
+		"""Returns the score at the last position"""
+		return self._data.last().element()
+	
+	def new_score(self,score):
+		"""Insert the new score if qualifies among the top 10 scores"""
+		if self._data.is_empty():
+			self._data.add_first(score)
+		elif score <= self.last() and len(self._data) < 10:
+			self._data.add_last(score)		# append new score if maximum length is not reached	
+		else:
+			if score > self.first():
+				self._data.add_first(score)
+			else:
+				start = self._data.first()
+				
+				# the score after which we insert the new score
+				# has to be bigger or at least equal to the new score
+				# the next must be smaller
+				while self._data.after(start).element() >= score: 
+					start = self._data.after(start)
+				self._data.add_after(start,score)
+			if len(self._data) > 10:
+				self._data.delete_last() 
+				
+#----------------------------source code ---------------------------------------------
 
 # Copyright 2013, Michael H. Goldwasser
 #
