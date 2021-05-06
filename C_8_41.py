@@ -1,3 +1,66 @@
+ """C-8.41 Describe how to clone a LinkedBinaryTree instance representing a proper
+  binary tree, with use of the attach method"""
+    
+  def clone(self,p,new,l = None,r = None):
+      """CLone a proper binary tree using _attach method"""
+      # The _attach method only allows for Binary Trees to be attached 
+      # to one another. So we start by first copying the root and then 
+      # we create a binary tree for each child of the current position, 
+      # add the elements to these positions and attach to our clone tree
+      # Then we recur on the children
+      if p == self.root():					# start the process	
+        n = new._add_root(p.element())
+        left = LinkedBinaryTree()
+        left._add_root(self.left(p).element())
+        right = LinkedBinaryTree()
+        right._add_root(self.right(p).element())
+        new._attach(n,left,right)
+        l = new.left(n)					# mark current positions of our clone tree
+        r = new.right(n)
+      else: 
+      
+          n1 = LinkedBinaryTree()
+          n1._add_root(self.left(p).element())
+          n2 = LinkedBinaryTree()
+          n2._add_root(self.right(p).element())
+          if p == self.left(self.parent(p)): # if p is left child
+            new._attach(l,n1,n2)			 # attach to the position marked as left
+            l = new.left(l)	
+          else:
+            new._attach(r,n1,n2)			# else attach to the position marked as right
+            r = new.right(r)
+      for j in self.children(p):
+          if self.left(j) is not None and self.right(j) is not None:
+            self.clone(j,new,l,r) 			# recur
+      return new
+    
+#----------------------attach method ---------------------------------------
+    
+    def _attach(self, p, t1, t2):
+    """Attach trees t1 and t2, respectively, as the left and right subtrees of the external Position p.
+
+    As a side effect, set t1 and t2 to empty.
+    Raise TypeError if trees t1 and t2 do not match type of this tree.
+    Raise ValueError if Position p is invalid or not external.
+    """
+    node = self._validate(p)
+    if not self.is_leaf(p):
+      raise ValueError('position must be leaf')
+    if not type(self) is type(t1) is type(t2):    # all 3 trees must be same type
+      raise TypeError('Tree types must match')
+    self._size += len(t1) + len(t2)
+    if not t1.is_empty():         # attached t1 as left subtree of node
+      t1._root._parent = node
+      node._left = t1._root
+      t1._root = None             # set t1 instance to empty
+      t1._size = 0
+    if not t2.is_empty():         # attached t2 as right subtree of node
+      t2._root._parent = node
+      node._right = t2._root
+      t2._root = None             # set t2 instance to empty
+      t2._size = 0
+  
+
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
