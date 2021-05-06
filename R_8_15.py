@@ -1,3 +1,41 @@
+"""The LinkedBinaryTree class provides only nonpublic versions of the up-
+date methods discussed on page 319. Implement a simple subclass named
+MutableLinkedBinaryTree that provides public wrapper functions for each
+of the inherited nonpublic update methods."""
+
+class MutableLinkedBinaryTree(LinkedBinaryTree):
+	"""A class providing public interface for the LinkedBinaryTree 
+	update methods"""
+	
+#---------------------public mutators----------------------------
+
+
+	def add_root(self,e):
+		"""Place new element at the root of the tree and return 
+		new position
+		Raise ValueError if tree is non empty"""
+		
+		return self._add_root(e)
+		
+	def add_right(self,p,e):
+		"""Create a new right child for position p with element e
+		Raise ValueError if right child already exist"""
+		
+		return self._add_right(p,e)
+		
+	def add_left(self,p,e):
+		"""Create a new left child for position p with element e
+		Raise ValueError if left child already exist"""
+		
+		return self._add_left(p,e)
+		
+	def __repr__(self):
+		return str([x for x in self])
+
+	# and so on...
+
+#--------------------source code----------------------
+	
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
