@@ -1,4 +1,96 @@
+ """C-8.50 Design algorithms for the following operations for a binary tree T :
+    • preorder next(p): Return the position visited after p in a preorder
+    traversal of T (or None if p is the last node visited).
+    • inorder next(p): Return the position visited after p in an inorder
+    traversal of T (or None if p is the last node visited).
+    • postorder next(p): Return the position visited after p in a postorder
+    traversal of T (or None if p is the last node visited)."""
 
+ #-------------------------------methods ----------------------------------
+
+  def preorder_next(self,p):
+      if not self.is_leaf(p):
+          return self.left(p).element()
+      else:
+          parent = self.parent(p)
+          if p == self.left(parent):
+              return self.right(parent)
+          else:
+              while p != self.left(parent):
+                  p = self.parent(p)
+                  parent = self.parent(parent)
+              return self.right(parent).element()
+                  
+            
+  def postorder_next(self,p):
+      """Returns next after p in postorder traversal"""
+      if not self.is_leaf(p):
+          parent = self.parent(p)
+          if p == self.right(parent):       # p is right child
+              return parent.element()       # climb the tree up
+          else:                             # p is left child
+              p = self.right(parent)        # jump right and find the leftmost leaf
+              while not self.is_leaf(p):
+                  p = self.left(p)
+              return p
+      else:                                 # p is leaf
+          parent = self.parent(p)
+          if p == self.left(p):             # p is left child
+              return self.right(parent).element()   # return p sibling
+          else:                             # p is right child
+              return parent.element()       # return p parent
+              
+  def inorder_next(self,p):
+        """Returns next item after p in an inorder traversal"""
+        if not self.is_leaf(p):   # p is internal
+            child = self.left(p)
+            while self.left(child) is not None: #find leftmost leaf
+                child = self.left(child)
+            return child.element()
+        else:                     # p is external
+            parent = self.parent(p)
+            if p == self.left(parent):  # p is left leaf - return p
+                return parent.element()
+            else:                       # p is right child
+                while p != self.left(parent): # climb the tree to find unvisited node
+                    p = parent
+                    parent = self.parent(parent)
+                return parent.element()
+              
+ """C-8.51 To implement the preorder method of the LinkedBinaryTree class, we re-
+   lied on the convenience of Python’s generator syntax and the yield state-
+   ment. Give an alternative implementation of preorder that returns an ex-
+   plicit instance of a nested iterator class. (See Section 2.3.4 for discussion
+   of iterators.)"""
+          
+class PreorderIterator(Tree):
+    """An iterator for preorder traversal of a tree"""
+    
+    def __init__(self,tree):
+        self._tree = tree
+        self._start = self._tree._root
+        self._k = 0
+        
+        
+        
+    def __next__(self):
+        old = self._start
+        if self._start._left:		# while left child
+            self._start = self._start._left		# return left child
+        elif self._start._left is None and self._start._right:	# if only right child
+            self._start = self._start._right					# return right child
+        elif self._start._left is None and self._start._right is None:	# node is leaf
+            if self._start._parent._right and self._start != self._start._parent._right: # if node has a right sibling
+                self._start = self._start._parent._right				# return right sibling
+            else:
+                self._start =self._start._parent._parent._right		# visit right children of the left side,the visit the right side
+        self._k += 1
+        if self._k == self._tree._size+1:  # repeat until reach the size of the tree
+            raise StopIteration()
+        return old
+
+# ----------------------------------------source code -----------------------------
+              
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
