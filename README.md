@@ -1,7 +1,7 @@
 # Data-Structures-and-Algorithms-in-python-Goodrich-Tamassia-Goldwasser-some-solutions-
-# The solutions are to the below exercises. Many of these don't require coded solutions,
-# I gave it an attempt anyway. I suspect many of my solutions can take some improvement
-
+## The solutions are to the below exercises. Many of these don't require coded solutions.
+## I gave it an attempt anyway. I suspect many of my solutions can take some improvement
+## The identation of the source code is 2 spaces
 C-7.24 Give a complete implementation of the stack ADT using a singly linked
 list that includes a header sentinel.
 
