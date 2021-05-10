@@ -1,4 +1,19 @@
 
+"""Describe a fast recursive algorithm for reversing a singly linked list."""
+
+   # A function to reverse singly linked list using a stack and a queue
+
+  def reverse_linked_list(self,start):
+  	"""Reverses a singly linked list"""
+	if start._next == None:
+ 	    self._head = start
+	    return start
+	else:
+	    self._reverse2(start._next)
+	start._next._next = start
+        start._next = None	# old self._head now points to nothing
+	
+---------------------------------source code --------------------------------
 class LinkedStack:
   """LIFO Stack implementation using a singly linked list for storage."""
 
@@ -204,18 +219,19 @@ class CircularQueue:
       count += 1                    # include the tail in the count
       return count
       
-"""Describe a fast recursive algorithm for reversing a singly linked list."""
+   """Describe a fast recursive algorithm for reversing a singly linked list."""
 
-# A function to reverse singly linked list using a stack and a queue
+   # A function to reverse singly linked list using a stack and a queue
 
-def reverse1(A,B):
-	"""Pop all elements from stack A and enqueue same elements to queue B"""
-	if type(A) != type(LinkedStack()) or type(B) != type(LinkedQueue()):
-		raise TypeError('It must be the specified types')
-	if A.is_empty():
-		return B
-	B.enqueue(A.pop())
-	return reverse1(A,B)
+  def reverse_linked_list(self,start):
+  	"""Reverses a singly linked list"""
+	if start._next == None:
+		 self._head = start
+		 return start
+	      else:
+		  self._reverse2(start._next)
+	      start._next._next = start
+	      start._next = None	# old self._head now points to nothing
 	
 
 
