@@ -1,4 +1,41 @@
-
+ """C-8.40 We can simplify parts of our LinkedBinaryTree implementation if we
+    make use of of a single sentinel node, referenced as the sentinel member
+    of the tree instance, such that the sentinel is the parent of the real root of
+    the tree, and the root is referenced as the left child of the sentinel. Fur-
+    thermore, the sentinel will take the place of None as the value of the left
+    or right member for a node without such a child. Give a new imple-
+    mentation of the update methods delete and attach, assuming such a
+    representation."""
+    
+  def _delete(self,p):
+    """Delete the node at Position p, and replace it with its child, if any.
+    Return the element that had been stored at Position p.
+    Raise ValueError if Position p is invalid or p has two children.
+    """
+    node = self._validate(p)
+    if node._left != self._sentinel and node._right != self._sentinel:
+        raise ValueError('Node has two children')
+    old = node._element
+    # node is external
+    if node._left == self._sentinel and node._right == self._sentinel:
+        parent = node._parent
+        if node == parent._left:			# find node's position 
+            parent._left = self._sentinel		
+        else:
+            parent._right = self._sentinel	# set position to sentinel
+    else:
+        child = node._left if node._left != self._sentinel else node._right
+        child._parent = node._parent
+        if node == node._parent._left: # if node is left child
+            node._parent._left = child	# child takes its place
+        else:							# node is right child
+            node._parent._right = child
+        
+    node._parent = node._left = node._right = node._element = None
+    self._size -= 1
+    return old
+    
+    # Attach stays pretty much the same with or without sentinel
 
 # Copyright 2013, Michael H. Goldwasser
 #
