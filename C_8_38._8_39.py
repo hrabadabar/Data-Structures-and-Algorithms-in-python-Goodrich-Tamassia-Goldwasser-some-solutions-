@@ -1,4 +1,123 @@
-
+"""C-8.38 Add support in LinkedBinaryTree for a method, delete subtree(p), that
+    removes the entire subtree rooted at position p, making sure to maintain
+    the count on the size of the tree. What is the running time of your imple-
+    mentation"""
+    
+  def _delete_subtree(self,p):
+      """Deletes an entire subtree rooted at position p"""
+      node = self._validate(p)
+      for j in self._subtree_postorder(p): 
+          node._parent = node._left = node._right = node._element = node = None
+          self._size -= 1
+  """ The running time of _delete_subtree is O(Cp), where Cp is the sum of all positions
+  that make the subtree rooted at p"""
+  
+  """C-8.39 Add support in LinkedBinaryTree for a method, swap(p,q), that has the
+    effect of restructuring the tree so that the node referenced by p takes the
+    place of the node referenced by q, and vice versa. Make sure to properly
+    handle the case when the nodes are adjacent."""
+    
+  def swap(self,p,q):
+      """Node referenced by p takes position q and node referenced by
+      q takes position p"""
+      """There are many special cases to consider"""
+      node1 = self._validate(p)
+      node2 = self._validate(q)
+      if node1._parent == node2._parent: # both children of the same node
+          l = node1._left				# mark node1 children 
+          r = node1._right
+          node1._left = node2._left			# start adjusting the pointers
+          if node2._left is not None:		# has node2 any children
+              node2._left._parent = node1	
+          node1._right = node2._right
+          if node2._right is not None:
+              node2._right._parent = node1   # they point to node1 now
+          node2._left = l   				# adjust node2 pointers
+          if l is not None:					# has node1 any children
+              l._parent = node2
+          node2._right = r
+          if r is not None:
+              r._parent = node2				# they point to node1 now
+          if node1._parent._left == node1:  # node1 was left and node2 was right
+              node1._parent._left = node2
+              node1._parent._right = node1	# swap positions
+              
+          else:								# node1 was right and node2 was left
+			  
+              node1._parent._right = node2
+              node1._parent._left = node1	# swap positions
+       
+      # next case - node2 is a child of node1   
+      elif node1._left == node2 or node1._right == node2:
+		  # start adjusting node2 pointers
+          l = node2._left
+          r = node2._right					# mark node2 children
+          if node1._left == node2:          # is node2 left child of node1
+              node2._left = node1			# now node1 is left child of node2
+              node2._right = node1._right	# node1 other child is now node2 right child
+              node1._right._parent = node2	# child now points to the right parent
+              
+          else:								# node2 is right child of node1
+			  # adjust pointers as with left child				
+              node2._right = node1			
+              node2._left = node1._left
+              node1._left._parent = node2
+          if node1 != self._root:   # node1 has parent
+              if node1._parent._left == node1: # is node1 left child
+                  node1._parent._left = node2  # now node1 parent points to node2
+					
+              else:							   # node1 is right child
+                  node1._parent._right = node2
+          else:								   # node1 is root, it has no parents
+              self._root = node2			   # root now is node2
+          # start adjusting node1 pointers
+          node1._left = l 					  
+          if l is not None:			 		   # has node2 any children
+              l._parent = node1
+          node1._right = r
+          if r is not None:
+              r._parent = node1				   # they now point to node1
+          node2._parent = node1._parent		   
+          node1._parent = node2				   # parents now point to the right nodes
+         
+      else:
+		  # non - adjacent nodes, different parents
+          l = node1._left
+          r = node1._right
+          p = node1._parent				# mark node1 attributes
+          # start adjusting node1 pointers
+          node1._left = node2._left
+          if node2._left is not None:		# has node2 any children
+            node2._left._parent = node1
+          node1._right = node2._right
+          if node2._right is not None:
+            node2._right._parent = node1    # they now point to node1
+  
+          node1._parent = node2._parent     
+         
+          if node2._parent._left == node2:  # is node2 left child of its parent
+              node2._parent._left = node1	# parent now points to node1
+              
+          else:								# node2 is right child
+			  
+              node2._parent._right = node1
+          # adjust node2 pointers
+          node2._left = l
+          if l is not None:				# has node1 got any children
+              l._parent = node2
+          node2._right = r
+          if r is not None:
+              r._parent = node2			# they point to node2 now
+          node2._parent = p				
+          if p is not None:				# has node1 parent
+              if p._left == node1:		# is node1 left child of its parent
+                  p._left = node2
+              else:						# or node1 is right child
+                  p._right = node2		# parent now points to node2
+          if node1 == self._root:		# in case node1 is root
+              self._root = node2		# reassign node2 to root
+	
+	
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
