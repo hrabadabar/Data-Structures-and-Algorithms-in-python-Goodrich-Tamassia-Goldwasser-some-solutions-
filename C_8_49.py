@@ -7,4 +7,4 @@ of p, including p itself. Derive a formula defining post(p) in terms of
 desc(p), depth(p), and pre(p), for each node p in T """
 
 
-# post(p) = pre(p) - depth(p) + desc(p) - 1
+# post(p) = pre(p) - depth(p) + desc(p) 
