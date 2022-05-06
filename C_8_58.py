@@ -1,4 +1,33 @@
+"""C-8.58 Let T be a tree with n positions. Define the lowest common ancestor
+(LCA) between two positions p and q as the lowest position in T that has
+both p and q as descendants (where we allow a position to be a descendant
+of itself ). Given two positions p and q, describe an efficient algorithm for
+finding the LCA of p and q. What is the running time of your algorithm?"""
 
+
+def LCA(T,p,q):
+	"""Returns the lowest common ancestor between two positions p and q"""
+	if T.parent(p) == q:				
+		return q.element()
+	elif T.parent(q) == p:
+		return p.element()
+	elif p == T.root():
+		return p.element()
+	elif q == T.root():
+		return q.element()      	# basic conditions
+	else:
+		d1 = T.depth(p)    		
+		d2 = T.depth(q)
+		the_chosen = p if d1 > d2 else q  # find the note with bigger depth
+		
+		the_not_chosen = p if d1 < d2 else q
+		# loop until you reach the node with lower depth or his parent or you reach the root
+		while not (the_chosen == the_not_chosen or the_chosen == T.root() or the_chosen == T.parent(the_not_chosen)):
+			the_chosen = T.parent(the_chosen) 
+			
+	return the_chosen	
+		
+	"""In the best case the running time is 0(1). In the worst - 0(n)"""
 # Copyright 2013, Michael H. Goldwasser
 #
 # Developed for use with the book:
